@@ -1,38 +1,29 @@
-import React from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import { cn } from '@/lib/utils'
+import Image from 'next/image'
+import Link from 'next/link'
 
-const header = ({ children }: HeaderProps) => {
+const Header = ({ children, className }: HeaderProps) => {
   return (
-    <div className="header">
-      <Link href="/" className="md:flex-1">
-        <Image
+    <div className={cn("header", className)}>
+      <Link href='/' className="md:flex-1">
+        <Image 
           src="/assets/icons/logo.svg"
-          alt="Logo"
+          alt="Logo with name"
           width={120}
           height={32}
-          className=" hidden md:block"
+          className="hidden md:block"
         />
-
-        <Image
+        <Image 
           src="/assets/icons/logo-icon.svg"
           alt="Logo"
           width={32}
           height={32}
-          className=" mr-2 md:hidden"
+          className="mr-2 md:hidden"
         />
       </Link>
       {children}
-      <SignedOut>
-        <SignInButton />
-      </SignedOut>
-      <SignedIn>
-        <UserButton />
-      </SignedIn>
-      
     </div>
-  );
-};
+  )
+}
 
-export default header;
+export default Header
