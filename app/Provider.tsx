@@ -6,29 +6,23 @@ import { useUser } from '@clerk/nextjs';
 import { ClientSideSuspense, LiveblocksProvider } from '@liveblocks/react/suspense';
 import { ReactNode } from 'react';
 
-const Provider = ({ children }: { children: ReactNode }) => {
+const Provider = ({ children }: { children: ReactNode}) => {
   const { user: clerkUser } = useUser();
 
   return (
-    <LiveblocksProvider
+    <LiveblocksProvider 
       authEndpoint="/api/liveblocks-auth"
       resolveUsers={async ({ userIds }) => {
-        const users = await getClerkUsers({ userIds });
+        const users = await getClerkUsers({ userIds});
+
         return users;
       }}
       resolveMentionSuggestions={async ({ text, roomId }) => {
-        const currentUserEmail = clerkUser?.emailAddresses?.[0]?.emailAddress;
-
-        if (!currentUserEmail) {
-          // Handle the case where email is not available, return an empty array or handle it as needed
-          return [];
-        }
-
         const roomUsers = await getDocumentUsers({
           roomId,
-          currentUser: currentUserEmail,
+          currentUser: clerkUser?.emailAddresses[0].emailAddress!,
           text,
-        });
+        })
 
         return roomUsers;
       }}
@@ -37,7 +31,7 @@ const Provider = ({ children }: { children: ReactNode }) => {
         {children}
       </ClientSideSuspense>
     </LiveblocksProvider>
-  );
-};
+  )
+}
 
-export default Provider;
+export default Provider
